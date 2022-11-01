@@ -5,7 +5,6 @@ import { Container } from '../styled/Container';
 import { Layout } from './style';
 import NavBar from '../NavBar/NavBar';
 import Content from '../Content/Content';
-import UsersService from '../../services/usersService';
 
 interface Props { }
 
