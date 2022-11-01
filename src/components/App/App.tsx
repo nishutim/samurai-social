@@ -1,10 +1,11 @@
-import React, { FC, useState } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import Header from '../Header/Header';
 import { AppWrapper } from './style';
 import { Container } from '../styled/Container';
 import { Layout } from './style';
 import NavBar from '../NavBar/NavBar';
 import Content from '../Content/Content';
+import UsersService from '../../services/usersService';
 
 interface Props { }
 
