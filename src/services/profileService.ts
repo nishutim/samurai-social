@@ -32,7 +32,7 @@ class ProfileService {
    }
 
    static fetchProfile = async (id: number) => {
-      const { data } = await $axios.get<ResponseType<IProfileData>>('/profile/' + id);
+      const { data } = await $axios.get<IProfileData>('/profile/' + id);
       return data;
    }
 }

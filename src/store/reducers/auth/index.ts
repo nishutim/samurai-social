@@ -1,4 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { IProfileData } from '../../../models/IProfileData';
 import { IUserData } from './../../../models/IUserData';
 
 interface InitialState {
@@ -7,6 +8,7 @@ interface InitialState {
    id: number | null
    email: string | null
    login: string | null
+   authUser: IProfileData | null
    captchaUrl: string
    error: string
 }
@@ -17,6 +19,7 @@ const initialState: InitialState = {
    id: null,
    email: null,
    login: null,
+   authUser: null,
    captchaUrl: '',
    error: ''
 };
@@ -55,6 +58,16 @@ const authSlice = createSlice({
          state.login = null
       },
       logoutFail: (state) => {
+         state.isLoading = false
+      },
+      fetchAuthUserStarted: (state) => {
+         state.isLoading = true
+      },
+      fetchAuthUserSuccess: (state, action: PayloadAction<IProfileData>) => {
+         state.isLoading = false
+         state.authUser = { ...action.payload }
+      },
+      fetchAuthUserFail: (state) => {
          state.isLoading = false
       }
    }

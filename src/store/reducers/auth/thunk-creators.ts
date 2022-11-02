@@ -1,10 +1,11 @@
-import { AppDispatch } from './../../index';
+import { AppDispatch, GetState } from './../../index';
 import { AuthActions } from '.';
 import AuthService from '../../../services/authService';
 import { ResultCodes } from '../../../models/ResultCodes';
 import { ResultCodeForCaptcha } from './../../../models/ResultCodes';
 import CaptchaService from '../../../services/captchaService';
 import { SetStatusT } from '../../../types';
+import ProfileService from '../../../services/profileService';
 
 export const checkAuth = () => async (dispatch: AppDispatch) => {
    dispatch(AuthActions.loginStarted());
@@ -57,5 +58,19 @@ export const logout = () => async (dispatch: AppDispatch) => {
    } catch (e: any) {
       dispatch(AuthActions.logoutFail());
       alert(e.message);
+   }
+}
+
+export const fetchAuthUser = () => async (dispatch: AppDispatch, getState: GetState) => {
+   dispatch(AuthActions.fetchAuthUserStarted());
+   try {
+      const userId = getState().auth.id;
+      if (userId) {
+         const data = await ProfileService.fetchProfile(userId);
+         dispatch(AuthActions.fetchAuthUserSuccess(data));
+      }
+   } catch (e: any) {
+      dispatch(AuthActions.fetchAuthUserFail());
+      alert(e.message + ' Please, reload page');
    }
 }

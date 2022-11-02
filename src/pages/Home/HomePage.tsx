@@ -1,11 +1,19 @@
-import React, { FC } from 'react';
+import React, { FC, useEffect } from 'react';
 import { HomePageWrapper, Layout } from './style';
 import { Container } from '../../components/styled';
 import Header from '../../components/Header/Header';
 import NavBar from '../../components/NavBar/NavBar';
 import Content from '../../components/Content/Content';
+import { useAppDispatch } from '../../hooks/redux';
+import { fetchAuthUser } from '../../store/reducers/auth/thunk-creators';
 
 const HomePage: FC = () => {
+   const dispatch = useAppDispatch();
+
+   useEffect(() => {
+      dispatch(fetchAuthUser());
+   }, []);
+
    return (
       <HomePageWrapper>
          <Header />
