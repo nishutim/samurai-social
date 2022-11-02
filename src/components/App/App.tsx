@@ -1,37 +1,22 @@
 import React, { FC, useEffect, useState } from 'react';
-import Header from '../Header/Header';
-import { AppWrapper } from './style';
-import { Container } from '../styled/Container';
-import { Layout } from './style';
-import NavBar from '../NavBar/NavBar';
-import Content from '../Content/Content';
+import { useAppDispatch } from '../../hooks/redux';
+import { checkAuth } from '../../store/reducers/auth/thunk-creators';
+import Preloader from '../Preloader/Preloader';
+import AppRouter from '../../router/AppRouter';
 
-interface Props { }
+const App: FC = () => {
+  const [initialized, setInitialized] = useState(false);
 
-const App: FC<Props> = () => {
-  const [auth, setAuth] = useState(false);
+  const dispatch = useAppDispatch();
 
-  const handleHeaderBtnClick = () => {
-    setAuth(auth => !auth)
-  }
+  useEffect(() => {
+    dispatch(checkAuth())
+      .then(() => setInitialized(true));
+  }, []);
 
-  return (
-    <AppWrapper>
-      <Header
-        auth={auth}
-        onBtnClick={handleHeaderBtnClick} />
-      <Layout>
-        <Container
-          minHeight={'100%'}
-          flex={'1 1 auto'}
-          display={'flex'}
-        >
-          <NavBar />
-          <Content />
-        </Container>
-      </Layout>
-    </AppWrapper>
-  );
+  if (!initialized) return <Preloader />
+
+  return <AppRouter />
 }
 
 export default App;

@@ -6,17 +6,17 @@ import { ILoginData } from "../models/ILoginData";
 
 class AuthService {
    static checkAuth = async () => {
-      const { data } = await $axios.get<ResponseType<IUserData>>('/me');
+      const { data } = await $axios.get<ResponseType<IUserData>>('/auth/me');
       return data;
    }
 
    static login = async (email: string, password: string, rememberMe: boolean, captcha: string) => {
-      const { data } = await $axios.post<ResponseType<ILoginData, ResultCodesWithCaptcha>>('/login', { email, password, rememberMe, captcha });
+      const { data } = await $axios.post<ResponseType<ILoginData, ResultCodesWithCaptcha>>('/auth/login', { email, password, rememberMe, captcha });
       return data;
    }
 
    static logout = async () => {
-      const { data } = await $axios.delete<ResponseType>('/login');
+      const { data } = await $axios.delete<ResponseType>('/auth/login');
       return data;
    }
 }

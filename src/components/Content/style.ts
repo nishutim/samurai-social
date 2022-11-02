@@ -6,4 +6,6 @@ export const StyledContent = styled.main`
    background-color: #fffcf9;
    border: 1px solid #D8D8D8;
    border-radius: 5px;
+   display: flex;
+   flex-direction: column;
 `;

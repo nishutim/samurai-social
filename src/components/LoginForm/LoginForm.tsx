@@ -1,56 +1,71 @@
 import React, { FC } from "react";
 import { FormikErrors, useFormik } from "formik";
-import { Button } from "../styled/Button";
-import { FlexContainer } from "../styled/FlexContainer";
-import { LoginFormBody, LoginFormField, LoginFormFieldMessage, LoginFormInput, LoginFormStatus, LoginFormTitle, RegistrationLink, StyledLoginForm } from "./style";
+import { SetStatusT } from "../../types";
+import { Button, FlexContainer } from "../styled";
+import {
+   StyledLoginForm,
+   LoginFormTitle,
+   LoginFormStatus,
+   LoginFormBody,
+   LoginFormField,
+   LoginFormFieldMessage,
+   LoginFormInput,
+   LoginFormCaptcha,
+   RegistrationLink
+} from "./style";
 
-const validate = (values: InitialValues) => {
-   const errors: FormikErrors<InitialValues> = {};
-   if (!values.email) {
-      errors.email = 'Required';
-   } else if (values.email.length > 20) {
-      errors.email = 'Must be 20 characters or less';
-   }
+interface Props {
+   captchaUrl: string
+   handleLogin: (values: FormValues, setStatus: SetStatusT) => void
+}
 
-   if (!values.password) {
-      errors.password = 'Required';
-   }
-
-   if (!values.captcha) {
-      errors.captcha = 'Required';
-   }
-
-   return errors;
-};
-
-interface InitialValues {
+export interface FormValues {
    email: string
    password: string
    rememberMe: boolean
    captcha: string
 }
 
-const LoginForm: FC<{}> = () => {
+const LoginForm: FC<Props> = ({ captchaUrl, handleLogin }) => {
+   const validate = (values: FormValues) => {
+      const errors: FormikErrors<FormValues> = {};
+      if (!values.email) {
+         errors.email = 'Required';
+      } else if (values.email.length > 40) {
+         errors.email = 'Must be 40 characters or less';
+      }
+
+      if (!values.password) {
+         errors.password = 'Required';
+      }
+
+      if (captchaUrl && !values.captcha) {
+         errors.captcha = 'Required';
+      }
+
+      return errors;
+   }
+
    const formik = useFormik({
       initialValues: {
          email: '',
          password: '',
          rememberMe: false,
          captcha: ''
-      },
+      } as FormValues,
       validate,
-      onSubmit: (values) => {
-         console.log(values);
+      onSubmit: (values, { setStatus }) => {
+         handleLogin(values, setStatus);
       }
    })
 
    return (
       <StyledLoginForm onSubmit={formik.handleSubmit}>
          <LoginFormTitle>Authorisation</LoginFormTitle>
-         {formik.status && <LoginFormStatus>Form status</LoginFormStatus>}
+         {formik.status && <LoginFormStatus>{formik.status}</LoginFormStatus>}
          <LoginFormBody>
             <LoginFormField>
-               {formik.errors.email && <LoginFormFieldMessage>{formik.errors.email}</LoginFormFieldMessage>}
+               {formik.errors.email && formik.touched.email && <LoginFormFieldMessage>{formik.errors.email}</LoginFormFieldMessage>}
                <LoginFormInput
                   type={'text'}
                   name={'email'}
@@ -59,7 +74,7 @@ const LoginForm: FC<{}> = () => {
                   placeholder={'Enter your email...'} />
             </LoginFormField>
             <LoginFormField>
-               {formik.errors.password && <LoginFormFieldMessage>{formik.errors.password}</LoginFormFieldMessage>}
+               {formik.errors.password && formik.touched.password && <LoginFormFieldMessage>{formik.errors.password}</LoginFormFieldMessage>}
                <LoginFormInput
                   type={'password'}
                   name={'password'}
@@ -67,6 +82,20 @@ const LoginForm: FC<{}> = () => {
                   onChange={formik.handleChange}
                   placeholder={'Enter your password...'} />
             </LoginFormField>
+            {captchaUrl &&
+               <LoginFormField>
+                  {formik.errors.captcha && formik.touched.captcha && <LoginFormFieldMessage>{formik.errors.captcha}</LoginFormFieldMessage>}
+                  <FlexContainer>
+                     <img src={captchaUrl} alt="" />
+                     <LoginFormCaptcha
+                        type={'text'}
+                        name={'captcha'}
+                        value={formik.values.captcha}
+                        onChange={formik.handleChange}
+                        placeholder={'Enter captcha'} />
+                  </FlexContainer>
+               </LoginFormField>
+            }
             <FlexContainer
                justify="space-between"
                align="center"

@@ -68,6 +68,10 @@ export const LoginFormInput = styled.input`
    }
 `;
 
+export const LoginFormCaptcha = styled(LoginFormInput)`
+   font-size: 24px;
+`;
+
 export const RegistrationLink = styled.p`
 
    a {
