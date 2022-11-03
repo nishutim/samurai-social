@@ -33,7 +33,7 @@ const ProfileStatus: FC<Props> = ({ status, isOwner }) => {
          {!editMode ?
             <Status>
                {isOwner && <EditBtn onClick={handleEditBtnClick}>Edit</EditBtn>}
-               <StatusText>{status}</StatusText>
+               <StatusText>{status || 'I don\'t have a status'}</StatusText>
             </Status>
             :
             <StatusForm

@@ -32,41 +32,26 @@ const authSlice = createSlice({
    name: 'auth',
    initialState,
    reducers: {
-      loginStarted: (state) => {
-         state.isLoading = true
+      toggleIsLoading: (state, action: PayloadAction<boolean>) => {
+         state.isLoading = action.payload
       },
       loginSuccess: (state, action: PayloadAction<IUserData>) => {
-         state.isLoading = false
          state.isAuth = true
          state.id = action.payload.id
          state.email = action.payload.email
          state.login = action.payload.login
          state.captchaUrl = ''
-         state.error = ''
-      },
-      loginFail: (state, action: PayloadAction<string>) => {
-         state.isLoading = false
-         state.error = action.payload
       },
       fetchCaptchaSuccess: (state, action: PayloadAction<string>) => {
          state.captchaUrl = action.payload
       },
-      logoutStarted: (state) => {
-         state.isLoading = true
-      },
       logoutSuccess: (state) => {
-         state.isLoading = false
          state.isAuth = false
          state.id = null
          state.email = null
          state.login = null
          state.authUser = null
-      },
-      logoutFail: (state) => {
-         state.isLoading = false
-      },
-      fetchAuthUserDataStarted: (state) => {
-         state.isLoading = true
+         state.authUserStatus = ''
       },
       fetchAuthUserDataSuccess: (state, action: PayloadAction<{ profile: IProfileData, status: string }>) => {
          state.isLoading = false
@@ -75,7 +60,6 @@ const authSlice = createSlice({
          state.error = ''
       },
       fetchAuthUserDataFail: (state, action: PayloadAction<string>) => {
-         state.isLoading = false
          state.error = action.payload
       },
       updatePhotoSuccess: (state, action: PayloadAction<IPhotos>) => {

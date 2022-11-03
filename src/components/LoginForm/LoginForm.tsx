@@ -15,6 +15,7 @@ import {
 } from "./style";
 
 interface Props {
+   isLoading: boolean
    captchaUrl: string
    handleLogin: (values: FormValues, setStatus: SetStatusT) => void
 }
@@ -26,7 +27,9 @@ export interface FormValues {
    captcha: string
 }
 
-const LoginForm: FC<Props> = ({ captchaUrl, handleLogin }) => {
+const LoginForm: FC<Props> = ({ isLoading, captchaUrl, handleLogin }) => {
+   console.log(isLoading);
+
    const validate = (values: FormValues) => {
       const errors: FormikErrors<FormValues> = {};
       if (!values.email) {
@@ -103,7 +106,7 @@ const LoginForm: FC<Props> = ({ captchaUrl, handleLogin }) => {
                <RegistrationLink>
                   Still don't have an account? <a href="https://social-network.samuraijs.com/" target={'_blank'}>Sign up!</a>
                </RegistrationLink>
-               <Button type="submit">Sing in</Button>
+               <Button type="submit" disabled={isLoading}>Sing in</Button>
             </FlexContainer>
          </LoginFormBody>
       </StyledLoginForm>

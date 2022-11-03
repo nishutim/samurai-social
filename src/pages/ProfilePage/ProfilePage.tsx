@@ -29,7 +29,7 @@ const ProfilePage: FC = () => {
       }
    }, []);
 
-   if (!currentProfile || !currentStatus || isLoading) return <PagePreloader />
+   if (!currentProfile || isLoading) return <PagePreloader />
 
    return (
       <Page>

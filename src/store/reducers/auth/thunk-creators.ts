@@ -9,16 +9,16 @@ import ProfileService from '../../../services/profileService';
 import { IProfile } from '../../../models/IProfile';
 
 export const checkAuth = () => async (dispatch: AppDispatch) => {
-   dispatch(AuthActions.loginStarted());
+   dispatch(AuthActions.toggleIsLoading(true));
    try {
       const data = await AuthService.checkAuth();
       if (data.resultCode === ResultCodes.SUCCESS) {
          dispatch(AuthActions.loginSuccess(data.data));
       }
    } catch (e: any) {
-      dispatch(AuthActions.loginFail(e.message));
       alert(e.message);
    }
+   dispatch(AuthActions.toggleIsLoading(false));
 }
 
 export const fetchCaptcha = () => async (dispatch: AppDispatch) => {
@@ -31,7 +31,7 @@ export const fetchCaptcha = () => async (dispatch: AppDispatch) => {
 }
 
 export const login = (email: string, password: string, rememberMe: boolean, captchaUrl: string, setStatus: SetStatusT) => async (dispatch: AppDispatch) => {
-   dispatch(AuthActions.loginStarted());
+   dispatch(AuthActions.toggleIsLoading(true));
    try {
       const data = await AuthService.login(email, password, rememberMe, captchaUrl);
       if (data.resultCode === ResultCodes.SUCCESS) {
@@ -44,26 +44,26 @@ export const login = (email: string, password: string, rememberMe: boolean, capt
    } catch (e: any) {
       alert(e.message);
    }
+   dispatch(AuthActions.toggleIsLoading(false));
 }
 
 export const logout = () => async (dispatch: AppDispatch) => {
-   dispatch(AuthActions.logoutStarted());
+   dispatch(AuthActions.toggleIsLoading(true));
    try {
       const data = await AuthService.logout();
       if (data.resultCode === ResultCodes.SUCCESS) {
          dispatch(AuthActions.logoutSuccess());
       } else {
-         dispatch(AuthActions.logoutFail());
          alert(data.messages[0]);
       }
    } catch (e: any) {
-      dispatch(AuthActions.logoutFail());
       alert(e.message);
    }
+   dispatch(AuthActions.toggleIsLoading(false));
 }
 
 export const fetchAuthUserData = () => async (dispatch: AppDispatch, getState: GetState) => {
-   dispatch(AuthActions.fetchAuthUserDataStarted());
+   dispatch(AuthActions.toggleIsLoading(true));
    try {
       const userId = getState().auth.id;
       if (userId) {
@@ -75,6 +75,7 @@ export const fetchAuthUserData = () => async (dispatch: AppDispatch, getState: G
       dispatch(AuthActions.fetchAuthUserDataFail(e.message));
       alert(e.message + ' Please, reload page');
    }
+   dispatch(AuthActions.toggleIsLoading(false));
 }
 
 export const updatePhoto = (photo: File) => async (dispatch: AppDispatch) => {
