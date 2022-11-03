@@ -1,4 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { IPhotos } from '../../../models/IPhotos';
+import { IProfile } from '../../../models/IProfile';
 import { IProfileData } from '../../../models/IProfileData';
 import { IUserData } from './../../../models/IUserData';
 
@@ -9,6 +11,7 @@ interface InitialState {
    email: string | null
    login: string | null
    authUser: IProfileData | null
+   authUserStatus: string
    captchaUrl: string
    error: string
 }
@@ -20,6 +23,7 @@ const initialState: InitialState = {
    email: null,
    login: null,
    authUser: null,
+   authUserStatus: '',
    captchaUrl: '',
    error: ''
 };
@@ -56,19 +60,34 @@ const authSlice = createSlice({
          state.id = null
          state.email = null
          state.login = null
+         state.authUser = null
       },
       logoutFail: (state) => {
          state.isLoading = false
       },
-      fetchAuthUserStarted: (state) => {
+      fetchAuthUserDataStarted: (state) => {
          state.isLoading = true
       },
-      fetchAuthUserSuccess: (state, action: PayloadAction<IProfileData>) => {
+      fetchAuthUserDataSuccess: (state, action: PayloadAction<{ profile: IProfileData, status: string }>) => {
          state.isLoading = false
-         state.authUser = { ...action.payload }
+         state.authUser = action.payload.profile
+         state.authUserStatus = action.payload.status
+         state.error = ''
       },
-      fetchAuthUserFail: (state) => {
+      fetchAuthUserDataFail: (state, action: PayloadAction<string>) => {
          state.isLoading = false
+         state.error = action.payload
+      },
+      updatePhotoSuccess: (state, action: PayloadAction<IPhotos>) => {
+         const newProfile = { ...state.authUser, photos: action.payload } as IProfileData
+         state.authUser = newProfile
+      },
+      updateStatusSuccess: (state, action: PayloadAction<string>) => {
+         state.authUserStatus = action.payload
+      },
+      updateProfileSuccess: (state, action: PayloadAction<IProfile>) => {
+         const newProfile = { ...state.authUser, ...action.payload } as IProfileData
+         state.authUser = newProfile
       }
    }
 });

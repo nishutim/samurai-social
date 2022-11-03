@@ -6,6 +6,7 @@ import { ResultCodeForCaptcha } from './../../../models/ResultCodes';
 import CaptchaService from '../../../services/captchaService';
 import { SetStatusT } from '../../../types';
 import ProfileService from '../../../services/profileService';
+import { IProfile } from '../../../models/IProfile';
 
 export const checkAuth = () => async (dispatch: AppDispatch) => {
    dispatch(AuthActions.loginStarted());
@@ -61,16 +62,57 @@ export const logout = () => async (dispatch: AppDispatch) => {
    }
 }
 
-export const fetchAuthUser = () => async (dispatch: AppDispatch, getState: GetState) => {
-   dispatch(AuthActions.fetchAuthUserStarted());
+export const fetchAuthUserData = () => async (dispatch: AppDispatch, getState: GetState) => {
+   dispatch(AuthActions.fetchAuthUserDataStarted());
    try {
       const userId = getState().auth.id;
       if (userId) {
-         const data = await ProfileService.fetchProfile(userId);
-         dispatch(AuthActions.fetchAuthUserSuccess(data));
+         const profile = await ProfileService.fetchProfile(userId);
+         const status = await ProfileService.fetchStatus(userId);
+         dispatch(AuthActions.fetchAuthUserDataSuccess({ profile, status }));
       }
    } catch (e: any) {
-      dispatch(AuthActions.fetchAuthUserFail());
+      dispatch(AuthActions.fetchAuthUserDataFail(e.message));
       alert(e.message + ' Please, reload page');
+   }
+}
+
+export const updatePhoto = (photo: File) => async (dispatch: AppDispatch) => {
+   try {
+      const data = await ProfileService.updatePhoto(photo);
+      if (data.resultCode === ResultCodes.SUCCESS) {
+         dispatch(AuthActions.updatePhotoSuccess(data.data.photos));
+      } else {
+         alert(data.messages[0]);
+      }
+   } catch (e: any) {
+      alert(e.message);
+   }
+}
+
+export const updateStatus = (status: string) => async (dispatch: AppDispatch) => {
+   try {
+      const data = await ProfileService.updateStatus(status);
+      if (data.resultCode === ResultCodes.SUCCESS) {
+         dispatch(AuthActions.updateStatusSuccess(status));
+      } else {
+         return Promise.reject(data.messages[0]);
+      }
+   } catch (e: any) {
+      alert(e.message);
+   }
+}
+
+export const updateProfile = (profile: IProfile, setStatus: SetStatusT) => async (dispatch: AppDispatch) => {
+   try {
+      const data = await ProfileService.updateProfile(profile);
+      if (data.resultCode === ResultCodes.SUCCESS) {
+         dispatch(AuthActions.updateProfileSuccess(profile));
+      } else {
+         setStatus(data.messages[0]);
+         return Promise.reject(data.messages[0]);
+      }
+   } catch (e: any) {
+      alert(e.message);
    }
 }

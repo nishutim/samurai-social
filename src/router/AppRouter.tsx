@@ -4,8 +4,8 @@ import { useAppSelector } from "../hooks/redux";
 import { auth_selectIsAuth } from "../store/reducers/auth/selectors";
 import { RouteNames } from "./RouteNames";
 
-import HomePage from "../pages/Home/HomePage";
-import LoginPage from "../pages/Login/LoginPage";
+import HomePage from "../pages/HomePage/HomePage";
+import LoginPage from "../pages/LoginPage/LoginPage";
 
 const AppRouter: FC = () => {
    const isAuth = useAppSelector(auth_selectIsAuth);

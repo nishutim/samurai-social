@@ -5,13 +5,13 @@ import Header from '../../components/Header/Header';
 import NavBar from '../../components/NavBar/NavBar';
 import Content from '../../components/Content/Content';
 import { useAppDispatch } from '../../hooks/redux';
-import { fetchAuthUser } from '../../store/reducers/auth/thunk-creators';
+import { fetchAuthUserData } from '../../store/reducers/auth/thunk-creators';
 
 const HomePage: FC = () => {
    const dispatch = useAppDispatch();
 
    useEffect(() => {
-      dispatch(fetchAuthUser());
+      dispatch(fetchAuthUserData());
    }, []);
 
    return (

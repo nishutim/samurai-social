@@ -22,7 +22,7 @@ class ProfileService {
    }
 
    static updateStatus = async (status: string) => {
-      const { data } = await $axios.put<ResponseType>('/status', status);
+      const { data } = await $axios.put<ResponseType>('/profile/status', { status });
       return data;
    }
 

@@ -1,9 +1,9 @@
 import React, { FC } from "react";
 import { Navigate, Route, Routes } from "react-router-dom";
 import { RouteNames } from "./RouteNames";
-import ProfilePage from "../pages/Profile/ProfilePage";
-import UsersPage from "../pages/Users/UsersPage";
-import ChatPage from "../pages/Chat/ChatPage";
+import ProfilePage from "../pages/ProfilePage/ProfilePage";
+import UsersPage from "../pages/UsersPage/UsersPage";
+import ChatPage from "../pages/ChatPage/ChatPage";
 
 const ContentRouter: FC = () => {
    return (

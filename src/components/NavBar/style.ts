@@ -2,9 +2,8 @@ import styled from 'styled-components';
 import { NavLink } from 'react-router-dom';
 
 export const StyledNavBar = styled.nav`
-   max-width: 200px;
    margin-right: 15px;
-   flex: 1 1 auto;
+   flex: 0 0 180px;
 `;
 
 export const NavList = styled.ul`

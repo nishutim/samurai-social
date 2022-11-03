@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 
 interface Props {
+   alignSelf?: string
    p?: string
    pt?: string
    pr?: string
@@ -14,6 +15,7 @@ interface Props {
 }
 
 export const Button = styled.button.attrs<Props>(props => ({
+   alignSelf: props.alignSelf || 'stretch',
    p: props.p || '5px 15px',
    pt: props.pt || '0',
    pr: props.pr || '0',
@@ -25,16 +27,17 @@ export const Button = styled.button.attrs<Props>(props => ({
    mb: props.mb || '0',
    ml: props.ml || '0'
 })) <Props>`
+   align-self: ${props => props.alignSelf};
    padding-top: ${props => props.pt};
    padding-right: ${props => props.pr};
    padding-bottom: ${props => props.pb};
    padding-left: ${props => props.pl};
    padding: ${props => props.p};
+   margin: ${props => props.m};
    margin-top: ${props => props.mt};
    margin-right: ${props => props.mr};
    margin-bottom: ${props => props.mb};
    margin-left: ${props => props.ml};
-   margin: ${props => props.m};
    border-radius: 5px;
    display: flex;
    justify-content: center;
