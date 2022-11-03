@@ -5,7 +5,7 @@ import { useAppDispatch } from "../../hooks/redux";
 import { updatePhoto } from "../../store/reducers/auth/thunk-creators";
 
 interface Props {
-   photo: string
+   photo: string | null
    isOwner: boolean
 }
 

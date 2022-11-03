@@ -1,7 +1,6 @@
 import React, { FC, useState } from "react";
 import { useAppDispatch } from "../../hooks/redux";
 import { updateStatus } from "../../store/reducers/auth/thunk-creators";
-import { SetStatusT } from "../../types";
 import StatusForm from "./StatusForm";
 import { EditBtn, Status, StatusText, StyledProfileStatus } from "./style";
 
