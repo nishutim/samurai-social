@@ -16,9 +16,10 @@ import {
 
 interface Props {
    user: IUser
+   toggleFollowing: (id: number, followed: boolean) => Promise<void>
 }
 
-const UserItem: FC<Props> = ({ user }) => {
+const UserItem: FC<Props> = ({ user, toggleFollowing }) => {
    const { id, name, photos, status, followed } = user;
    const avatarUrl = photos.small || defaultAvatar;
    const btnText = followed ? 'Unfollow' : 'Follow';
@@ -26,12 +27,10 @@ const UserItem: FC<Props> = ({ user }) => {
 
    const [disabled, setDisabled] = useState(false);
 
-   const toggleFollowing = async () => {
+   const handleBtnClick = async () => {
       setDisabled(true);
-      setTimeout(() => {
-         console.log('Followed/Unfollowed');
-         setDisabled(false);
-      }, 1200);
+      await toggleFollowing(id, followed);
+      setDisabled(false);
    }
 
    return (
@@ -46,7 +45,7 @@ const UserItem: FC<Props> = ({ user }) => {
                <Button
                   p="0px 5px"
                   disabled={disabled}
-                  onClick={toggleFollowing}
+                  onClick={handleBtnClick}
                >
                   {btnText}
                </Button>

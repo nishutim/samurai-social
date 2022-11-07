@@ -5,13 +5,17 @@ import { StyledUsersList } from "./style";
 
 interface Props {
    users: IUser[]
+   toggleFollowing: (id: number, followed: boolean) => Promise<void>
 }
 
-const UsersList: FC<Props> = ({ users }) => {
+const UsersList: FC<Props> = ({ users, toggleFollowing }) => {
    return (
       <StyledUsersList>
          {users.map(user => (
-            <UserItem key={user.id} user={user} />
+            <UserItem
+               key={user.id}
+               user={user}
+               toggleFollowing={toggleFollowing} />
          ))}
       </StyledUsersList>
    );

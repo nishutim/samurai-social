@@ -11,7 +11,8 @@ import {
    LoginFormFieldMessage,
    LoginFormInput,
    LoginFormCaptcha,
-   RegistrationLink
+   RegistrationLink,
+   LoginFormCheckbox
 } from "./style";
 
 interface Props {
@@ -28,8 +29,6 @@ export interface FormValues {
 }
 
 const LoginForm: FC<Props> = ({ isLoading, captchaUrl, handleLogin }) => {
-   console.log(isLoading);
-
    const validate = (values: FormValues) => {
       const errors: FormikErrors<FormValues> = {};
       if (!values.email) {
@@ -84,6 +83,12 @@ const LoginForm: FC<Props> = ({ isLoading, captchaUrl, handleLogin }) => {
                   value={formik.values.password}
                   onChange={formik.handleChange}
                   placeholder={'Enter your password...'} />
+            </LoginFormField>
+            <LoginFormField>
+               <LoginFormCheckbox>
+                  <input type="checkbox" name="rememberMe" checked={formik.values.rememberMe} onChange={formik.handleChange} />
+                  Remember me
+               </LoginFormCheckbox>
             </LoginFormField>
             {captchaUrl &&
                <LoginFormField>

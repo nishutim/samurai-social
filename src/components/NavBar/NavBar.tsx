@@ -1,16 +1,16 @@
 import React, { FC } from "react";
-import { StyledNavBar, StyledNavLink } from "./style";
+import { NavList, NavListItem, StyledNavBar, StyledNavLink } from "./style";
 
 interface Props { }
 
 const NavBar: FC<Props> = (props) => {
    return (
       <StyledNavBar>
-         <ul>
-            <li><StyledNavLink to='/profile'>Profile</StyledNavLink></li>
-            <li><StyledNavLink to='/users'>Users</StyledNavLink></li>
-            <li><StyledNavLink to='/chat'>Chat</StyledNavLink></li>
-         </ul>
+         <NavList>
+            <NavListItem><StyledNavLink to='/profile'>Profile</StyledNavLink></NavListItem>
+            <NavListItem><StyledNavLink to='/users'>Users</StyledNavLink></NavListItem>
+            <NavListItem><StyledNavLink to='/chat'>Chat</StyledNavLink></NavListItem>
+         </NavList>
       </StyledNavBar>
    );
 }

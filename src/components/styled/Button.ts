@@ -50,4 +50,8 @@ export const Button = styled.button.attrs<Props>(props => ({
    &:hover {
       background-color: #c48864;
    }
+
+   &:disabled {
+      background-color: ${props => props.theme.colors.$gray};
+   }
 `;

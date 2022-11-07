@@ -1,128 +1,49 @@
-import React, { FC } from "react";
-import { Page, PageBody } from "../../components/styled/Page";
-import UsersList from "../../components/UsersList/UsersList";
-import { IUser } from "../../models/IUser";
+import React, { FC, useEffect } from "react";
+import { useSearchParams } from "react-router-dom";
+import { useAppDispatch, useAppSelector } from "../../hooks/redux";
+import {
+   users_selectCurrentPageNum,
+   users_selectFilter,
+   users_selectPageSize,
+   users_selectUsers
+} from "../../store/reducers/users/selectors";
+import { UsersActions } from "../../store/reducers/users";
+import { fetchUsers } from "../../store/reducers/users/thunk-creators";
+import PagePreloader from "../../components/PagePreloader/PagePreloader";
+import Users from "../../components/Users/Users";
 
 const UsersPage: FC = () => {
-   const users = [
-      {
-         name: "skyrim_dlya_nordov",
-         id: 26547,
-         uniqueUrlName: null,
-         photos: {
-            small: null,
-            large: null
-         },
-         status: null,
-         followed: false
-      },
-      {
-         name: "johnyone",
-         id: 26546,
-         uniqueUrlName: null,
-         photos: {
-            small: null,
-            large: null
-         },
-         status: null,
-         followed: false
-      },
-      {
-         name: "boberus",
-         id: 26545,
-         uniqueUrlName: null,
-         photos: {
-            small: null,
-            large: null
-         },
-         status: null,
-         followed: false
-      },
-      {
-         name: "bober",
-         id: 26544,
-         uniqueUrlName: null,
-         photos: {
-            small: null,
-            large: null
-         },
-         status: null,
-         followed: false
-      },
-      {
-         name: "komlevalex",
-         id: 26543,
-         uniqueUrlName: null,
-         photos: {
-            small: null,
-            large: null
-         },
-         status: null,
-         followed: false
-      },
-      {
-         name: "Yurij12345",
-         id: 26542,
-         uniqueUrlName: null,
-         photos: {
-            small: null,
-            large: null
-         },
-         status: null,
-         followed: false
-      },
-      {
-         name: "yulia_bobko",
-         id: 26541,
-         uniqueUrlName: null,
-         photos: {
-            small: null,
-            large: null
-         },
-         status: null,
-         followed: false
-      },
-      {
-         name: "AlexKazakqq",
-         id: 26540,
-         uniqueUrlName: null,
-         photos: {
-            small: null,
-            large: null
-         },
-         status: null,
-         followed: false
-      },
-      {
-         name: "Zlotnik_Ilya",
-         id: 26539,
-         uniqueUrlName: null,
-         photos: {
-            small: null,
-            large: null
-         },
-         status: null,
-         followed: false
-      },
-      {
-         name: "Kattekly",
-         id: 26538,
-         uniqueUrlName: null,
-         photos: {
-            small: null,
-            large: null
-         },
-         status: null,
-         followed: false
-      }
-   ] as IUser[];
+   const currentPageNum = useAppSelector(users_selectCurrentPageNum);
+   const pageSize = useAppSelector(users_selectPageSize);
+   const filter = useAppSelector(users_selectFilter);
+   const users = useAppSelector(users_selectUsers);
+
+   const [searchParams, setSearchParams] = useSearchParams();
+
+   const dispatch = useAppDispatch();
+
+   useEffect(() => {
+      const page = searchParams.get('page');
+      const term = searchParams.get('term');
+      const friend = searchParams.get('friend');
+
+      let actualPageNum = Number(page) || currentPageNum;
+      let actualFilter = filter;
+
+      if (term) actualFilter = { ...actualFilter, term };
+      if (friend) actualFilter = { ...actualFilter, friendsOnly: friend as 'null' | 'true' | 'false' };
+
+      dispatch(UsersActions.setCurrentPageNum(actualPageNum));
+      dispatch(UsersActions.setFilter(actualFilter));
+      dispatch(fetchUsers(actualPageNum, pageSize, actualFilter));
+   }, []);
+
+   if (!users) return <PagePreloader />
 
    return (
-      <Page>
-         <PageBody>
-            <UsersList users={users} />
-         </PageBody>
-      </Page>
+      <Users
+         users={users}
+         setSearchParams={setSearchParams} />
    );
 }
 

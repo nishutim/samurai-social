@@ -22,6 +22,7 @@ export const AuthUserAvatar = styled(Avatar)`
 `;
 
 export const UserName = styled.p`
+   margin-bottom: 0;
    font-size: 18px;
    font-weight: 600;
 `;

@@ -7,6 +7,8 @@ export const StyledNavBar = styled.nav`
 `;
 
 export const NavList = styled.ul`
+   margin-bottom: 0;
+   padding-left: 0;
    display: flex;
    flex-direction: column;
 `;
@@ -19,10 +21,13 @@ export const StyledNavLink = styled(NavLink)`
    padding: 7px 15px;
    border-radius: 5px;
    font-size: 18px;
+   font-weight: 500;
    color: #3A3A3A;
+   text-decoration: none;
    transition: all 0.3s ease;
 
    &:hover {
+      color: #3A3A3A;
       background-color: #e9e5e0;
    }
 `;

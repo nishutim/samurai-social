@@ -48,5 +48,6 @@ export const UserItemName = styled.h4`
 export const UserItemStatus = styled.p`
    font-size: 20px;
    font-weight: 500;
+   word-break: break-word;
    color: ${props => props.theme.colors.$gray};
 `;

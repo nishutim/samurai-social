@@ -68,6 +68,16 @@ export const LoginFormInput = styled.input`
    }
 `;
 
+export const LoginFormCheckbox = styled.label`
+   &:hover {
+      cursor: pointer;
+   }
+
+   input {
+      margin-right: 5px;
+   }
+`;
+
 export const LoginFormCaptcha = styled(LoginFormInput)`
    font-size: 24px;
 `;

@@ -1,4 +1,6 @@
 import React, { FC, useEffect, useState } from 'react';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import './app.css';
 import { useAppDispatch } from '../../hooks/redux';
 import { checkAuth } from '../../store/reducers/auth/thunk-creators';
 import Preloader from '../Preloader/Preloader';
