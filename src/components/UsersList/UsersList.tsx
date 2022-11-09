@@ -8,7 +8,7 @@ interface Props {
    toggleFollowing: (id: number, followed: boolean) => Promise<void>
 }
 
-const UsersList: FC<Props> = ({ users, toggleFollowing }) => {
+const UsersList: FC<Props> = React.memo(({ users, toggleFollowing }) => {
    return (
       <StyledUsersList>
          {users.map(user => (
@@ -19,6 +19,6 @@ const UsersList: FC<Props> = ({ users, toggleFollowing }) => {
          ))}
       </StyledUsersList>
    );
-}
+})
 
 export default UsersList;

@@ -1,20 +1,19 @@
-import React, { FC, useState } from "react";
+import React, { FC, useCallback, useState } from "react";
 import { useAppDispatch } from "../../hooks/redux";
 import { IProfile } from "../../models/IProfile";
 import { IProfileData } from "../../models/IProfileData";
-import { updateProfile } from "../../store/reducers/auth/thunk-creators";
 import { SetStatusT } from "../../types";
-import { Button } from "../styled";
+import { StyledProfileInfo } from "./style";
+import { updateProfile } from "../../store/reducers/auth/thunk-creators";
 import Info from "./Info";
 import InfoForm from "./InfoForm";
-import { StyledProfileInfo } from "./style";
 
 interface Props {
    profile: IProfileData
    isOwner: boolean
 }
 
-const ProfileInfo: FC<Props> = ({ profile, isOwner }) => {
+const ProfileInfo: FC<Props> = React.memo(({ profile, isOwner }) => {
    const [editMode, setEditMode] = useState(false);
 
    const dispatch = useAppDispatch();
@@ -23,14 +22,14 @@ const ProfileInfo: FC<Props> = ({ profile, isOwner }) => {
       setEditMode(true);
    }
 
-   const handleSaveBtnClick = async (profile: IProfile, setStatus: SetStatusT) => {
+   const handleSaveBtnClick = useCallback(async (profile: IProfile, setStatus: SetStatusT) => {
       try {
          await dispatch(updateProfile(profile, setStatus));
          setEditMode(false);
       } catch (e: any) {
          alert(e);
       }
-   }
+   }, [])
 
    return (
       <StyledProfileInfo>
@@ -46,6 +45,6 @@ const ProfileInfo: FC<Props> = ({ profile, isOwner }) => {
          }
       </StyledProfileInfo>
    );
-}
+})
 
 export default ProfileInfo;

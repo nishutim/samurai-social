@@ -6,4 +6,5 @@ export const StyledPreloader = styled.div`
    justify-content: center;
    align-items: center;
    background-color: #FCF8F3;
+   font-size: 24px;
 `;

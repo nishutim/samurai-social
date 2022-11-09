@@ -1,8 +1,7 @@
-import React, { FC, useState, useEffect } from "react";
+import React, { FC, useState, useEffect, useCallback } from "react";
 import { IUser } from "../../models/IUser";
 import { IFilter } from "../../models/IFilter";
-import { useAppDispatch, useAppSelector } from "../../hooks/redux";
-import { users_selectCurrentPageNum, users_selectFilter, users_selectIsLoading, users_selectPageSize, users_selectTotalCount } from "../../store/reducers/users/selectors";
+import { useAppDispatch } from "../../hooks/redux";
 import { UsersActions } from "../../store/reducers/users";
 import { fetchUsers, followUser, unfollowUser } from "../../store/reducers/users/thunk-creators";
 import { Page, PageBody } from "../../components/styled/Page";
@@ -12,17 +11,16 @@ import PagePreloader from "../PagePreloader/PagePreloader";
 import UsersFilter from "../UsersFilter/UsersFilter";
 
 interface Props {
+   isLoading: boolean
+   currentPageNum: number
+   pageSize: number
+   filter: IFilter
    users: IUser[]
+   totalCount: number
    setSearchParams: Function
 }
 
-const Users: FC<Props> = ({ users, setSearchParams }) => {
-   const isLoading = useAppSelector(users_selectIsLoading);
-   const totalCount = useAppSelector(users_selectTotalCount);
-   const currentPageNum = useAppSelector(users_selectCurrentPageNum);
-   const pageSize = useAppSelector(users_selectPageSize);
-   const filter = useAppSelector(users_selectFilter);
-
+const Users: FC<Props> = ({ isLoading, currentPageNum, pageSize, filter, users, totalCount, setSearchParams }) => {
    const [currentPortionNum, setCurrentPortionNum] = useState(1);
 
    const dispatch = useAppDispatch();
@@ -42,32 +40,36 @@ const Users: FC<Props> = ({ users, setSearchParams }) => {
 
    }, [currentPageNum, filter]);
 
-   const handlePageChange = (pageNum: number) => {
+   const handlePageChange = useCallback((pageNum: number) => {
       dispatch(UsersActions.setCurrentPageNum(pageNum));
       dispatch(fetchUsers(pageNum, pageSize, filter));
-   }
+   }, [pageSize, filter])
 
-   const handlePrevBtnClick = (pageNum: number) => {
-      setCurrentPortionNum(portion => portion - 1);
+   const handlePrevBtnClick = useCallback((pageNum: number) => {
+      setCurrentPortionNum(currentPortionNum => currentPortionNum - 1);
       handlePageChange(pageNum);
-   }
+   }, [handlePageChange])
 
-   const handleNextBtnClick = (pageNum: number) => {
-      setCurrentPortionNum(portion => portion + 1);
+   const handleNextBtnClick = useCallback((pageNum: number) => {
+      setCurrentPortionNum(currentPortionNum => currentPortionNum + 1);
       handlePageChange(pageNum);
-   }
+   }, [handlePageChange])
 
-   const findUsers = (filter: IFilter) => {
-      dispatch(UsersActions.setCurrentPageNum(1));
-      setCurrentPortionNum(1);
-      dispatch(UsersActions.setFilter(filter));
-      dispatch(fetchUsers(1, pageSize, filter));
-   }
+   const findUsers = useCallback(async (newFilter: IFilter) => {
+      console.log(filter.term !== newFilter.term || filter.friendsOnly !== newFilter.friendsOnly);
 
-   const toggleFollowing = async (id: number, followed: boolean) => {
+      if (filter.term !== newFilter.term || filter.friendsOnly !== newFilter.friendsOnly) {
+         dispatch(UsersActions.setCurrentPageNum(1));
+         setCurrentPortionNum(1);
+         dispatch(UsersActions.setFilter(newFilter));
+         await dispatch(fetchUsers(1, pageSize, newFilter));
+      }
+   }, [pageSize, filter])
+
+   const toggleFollowing = useCallback(async (id: number, followed: boolean) => {
       const action = followed ? unfollowUser : followUser;
       await dispatch(action(id));
-   }
+   }, [])
 
    return (
       <Page>

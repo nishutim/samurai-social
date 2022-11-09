@@ -19,8 +19,9 @@ interface Props {
    toggleFollowing: (id: number, followed: boolean) => Promise<void>
 }
 
-const UserItem: FC<Props> = ({ user, toggleFollowing }) => {
+const UserItem: FC<Props> = React.memo(({ user, toggleFollowing }) => {
    const { id, name, photos, status, followed } = user;
+
    const avatarUrl = photos.small || defaultAvatar;
    const btnText = followed ? 'Unfollow' : 'Follow';
    const statusText = status || 'I don\'t have a status';
@@ -57,6 +58,6 @@ const UserItem: FC<Props> = ({ user, toggleFollowing }) => {
          </UserItemBody>
       </StyledUserItem>
    );
-}
+})
 
 export default UserItem;

@@ -41,6 +41,7 @@ const authSlice = createSlice({
          state.email = action.payload.email
          state.login = action.payload.login
          state.captchaUrl = ''
+         state.error = ''
       },
       fetchCaptchaSuccess: (state, action: PayloadAction<string>) => {
          state.captchaUrl = action.payload
@@ -72,6 +73,9 @@ const authSlice = createSlice({
       updateProfileSuccess: (state, action: PayloadAction<IProfile>) => {
          const newProfile = { ...state.authUser, ...action.payload } as IProfileData
          state.authUser = newProfile
+      },
+      setError: (state, action: PayloadAction<string>) => {
+         state.error = action.payload
       }
    }
 });

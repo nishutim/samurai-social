@@ -1,12 +1,12 @@
+import React, { FC, useState } from 'react';
 import { useFormik } from 'formik';
-import React, { FC } from 'react';
 import { Form } from 'react-bootstrap';
 import { IFilter } from '../../models/IFilter';
 import { Button } from '../styled';
 import { StyledUsersFilter } from './style';
 
 interface Props {
-   handleSubmit: (filter: IFilter) => void
+   handleSubmit: (filter: IFilter) => Promise<void>
    filter: IFilter
 }
 
@@ -15,14 +15,18 @@ interface FormValues {
    friendsOnly: 'null' | 'true' | 'false'
 }
 
-const UsersFilter: FC<Props> = ({ handleSubmit, filter }) => {
+const UsersFilter: FC<Props> = React.memo(({ handleSubmit, filter }) => {
+   const [disableBtn, setDisableBtn] = useState(false);
+
    const formik = useFormik({
       initialValues: {
          term: filter.term,
          friendsOnly: filter.friendsOnly
       } as FormValues,
-      onSubmit: (values) => {
-         handleSubmit(values);
+      onSubmit: async (values) => {
+         setDisableBtn(true);
+         await handleSubmit(values);
+         setDisableBtn(false);
       }
    });
 
@@ -35,10 +39,10 @@ const UsersFilter: FC<Props> = ({ handleSubmit, filter }) => {
                <option value="true">Friends only</option>
                <option value="false">Not friends</option>
             </Form.Select>
-            <Button type='submit'>Find</Button>
+            <Button disabled={disableBtn} type='submit'>Find</Button>
          </Form>
       </StyledUsersFilter>
    );
-}
+})
 
 export default UsersFilter;

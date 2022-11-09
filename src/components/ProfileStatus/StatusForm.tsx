@@ -1,6 +1,5 @@
+import React, { FC, useState } from "react";
 import { FormikErrors, useFormik } from "formik";
-import React, { FC } from "react";
-import { SetStatusT } from "../../types";
 import { FlexContainer } from "../styled";
 import { EditBtn, StyledStatusForm, StatusFormInput, StatusFormStatus } from "./style";
 
@@ -22,14 +21,18 @@ interface Props {
    handleSaveBtnClick: (status: string) => void
 }
 
-const StatusForm: FC<Props> = ({ status, handleSaveBtnClick }) => {
+const StatusForm: FC<Props> = React.memo(({ status, handleSaveBtnClick }) => {
+   const [disableBtn, setDisableBtn] = useState(false);
+
    const formik = useFormik({
       initialValues: {
          statusText: status
       } as FormValues,
       validate,
-      onSubmit: ({ statusText }) => {
-         handleSaveBtnClick(statusText);
+      onSubmit: async ({ statusText }) => {
+         setDisableBtn(true);
+         await handleSaveBtnClick(statusText);
+         setDisableBtn(false);
       }
    });
 
@@ -37,7 +40,7 @@ const StatusForm: FC<Props> = ({ status, handleSaveBtnClick }) => {
       <StyledStatusForm onSubmit={formik.handleSubmit}>
          {formik.errors.statusText && <StatusFormStatus>{formik.errors.statusText}</StatusFormStatus>}
          <FlexContainer>
-            <EditBtn type="submit">Save</EditBtn>
+            <EditBtn disabled={disableBtn} type="submit">Save</EditBtn>
             <StatusFormInput
                type="text"
                name="statusText"
@@ -46,6 +49,6 @@ const StatusForm: FC<Props> = ({ status, handleSaveBtnClick }) => {
          </FlexContainer>
       </StyledStatusForm>
    );
-}
+})
 
 export default StatusForm;

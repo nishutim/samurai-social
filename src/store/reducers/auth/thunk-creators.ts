@@ -16,7 +16,7 @@ export const checkAuth = () => async (dispatch: AppDispatch) => {
          dispatch(AuthActions.loginSuccess(data.data));
       }
    } catch (e: any) {
-      alert(e.message);
+      dispatch(AuthActions.setError(e.message));
    }
    dispatch(AuthActions.toggleIsLoading(false));
 }
@@ -42,7 +42,7 @@ export const login = (email: string, password: string, rememberMe: boolean, capt
          setStatus(data.messages[0]);
       }
    } catch (e: any) {
-      alert(e.message);
+      dispatch(AuthActions.setError(e.message));
    }
    dispatch(AuthActions.toggleIsLoading(false));
 }

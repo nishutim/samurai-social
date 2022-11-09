@@ -1,9 +1,9 @@
 import React, { FC } from "react";
 import { IProfileData } from "../../models/IProfileData";
+import { StyledProfile } from "./style";
 import ProfileAvatar from "../ProfileAvatar/ProfileAvatar";
 import ProfileInfo from "../ProfileInfo/ProfileInfo";
 import ProfileStatus from "../ProfileStatus/ProfileStatus";
-import { StyledProfile } from "./style";
 
 interface Props {
    profile: IProfileData
@@ -11,7 +11,7 @@ interface Props {
    isOwner: boolean
 }
 
-const Profile: FC<Props> = ({ profile, status, isOwner }) => {
+const Profile: FC<Props> = React.memo(({ profile, status, isOwner }) => {
    const photo = profile.photos.large;
 
    return (
@@ -27,6 +27,6 @@ const Profile: FC<Props> = ({ profile, status, isOwner }) => {
             isOwner={isOwner} />
       </StyledProfile>
    );
-}
+})
 
 export default Profile;

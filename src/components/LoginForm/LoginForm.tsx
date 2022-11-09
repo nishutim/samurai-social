@@ -28,7 +28,7 @@ export interface FormValues {
    captcha: string
 }
 
-const LoginForm: FC<Props> = ({ isLoading, captchaUrl, handleLogin }) => {
+const LoginForm: FC<Props> = React.memo(({ isLoading, captchaUrl, handleLogin }) => {
    const validate = (values: FormValues) => {
       const errors: FormikErrors<FormValues> = {};
       if (!values.email) {
@@ -116,6 +116,6 @@ const LoginForm: FC<Props> = ({ isLoading, captchaUrl, handleLogin }) => {
          </LoginFormBody>
       </StyledLoginForm>
    );
-}
+})
 
 export default LoginForm;

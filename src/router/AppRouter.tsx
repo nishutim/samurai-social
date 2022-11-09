@@ -8,7 +8,7 @@ import { RouteNames } from "./RouteNames";
 const HomePage = React.lazy(() => import('../pages/HomePage/HomePage'));
 const LoginPage = React.lazy(() => import('../pages/LoginPage/LoginPage'));
 
-const AppRouter: FC = () => {
+const AppRouter: FC = React.memo(() => {
    const isAuth = useAppSelector(auth_selectIsAuth);
 
    return (
@@ -26,6 +26,6 @@ const AppRouter: FC = () => {
             </Routes>
          </Suspense>
    );
-}
+})
 
 export default AppRouter;

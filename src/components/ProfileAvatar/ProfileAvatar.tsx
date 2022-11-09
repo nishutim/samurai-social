@@ -9,7 +9,7 @@ interface Props {
    isOwner: boolean
 }
 
-const ProfileAvatar: FC<Props> = ({ photo, isOwner }) => {
+const ProfileAvatar: FC<Props> = React.memo(({ photo, isOwner }) => {
    const avatarUrl = photo || defaultAvatar;
 
    const dispatch = useAppDispatch();
@@ -33,6 +33,6 @@ const ProfileAvatar: FC<Props> = ({ photo, isOwner }) => {
             </UploadPhotoBtn>}
       </StyledProfileAvatar>
    );
-}
+})
 
 export default ProfileAvatar;

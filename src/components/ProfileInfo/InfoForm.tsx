@@ -1,5 +1,5 @@
 import { FormikErrors, useFormik } from "formik";
-import React, { FC } from "react";
+import React, { FC, useState } from "react";
 import { IContacts } from "../../models/IContacts";
 import { IProfile } from "../../models/IProfile";
 import { IProfileData } from "../../models/IProfileData";
@@ -54,7 +54,9 @@ interface Props {
    handleSaveBtnClick: (profile: IProfile, setStatus: SetStatusT) => void
 }
 
-const InfoForm: FC<Props> = ({ profile, handleSaveBtnClick }) => {
+const InfoForm: FC<Props> = React.memo(({ profile, handleSaveBtnClick }) => {
+   const [disableBtn, setDisableBtn] = useState(false);
+
    const formik = useFormik({
       initialValues: {
          fullName: profile.fullName,
@@ -64,14 +66,16 @@ const InfoForm: FC<Props> = ({ profile, handleSaveBtnClick }) => {
          contacts: profile.contacts
       } as FormValues,
       validate,
-      onSubmit: (values, { setStatus }) => {
-         handleSaveBtnClick(values, setStatus)
+      onSubmit: async (values, { setStatus }) => {
+         setDisableBtn(true);
+         await handleSaveBtnClick(values, setStatus);
+         setDisableBtn(false);
       }
    })
 
    return (
       <StyledInfoForm onSubmit={formik.handleSubmit}>
-         <Button type="submit" alignSelf="flex-start" mb="20px">Save profile</Button>
+         <Button disabled={disableBtn} type="submit" alignSelf="flex-start" mb="20px">Save profile</Button>
          {formik.status && <InfoFormStatus>{formik.status}</InfoFormStatus>}
          <FieldList>
             <FieldListItem>
@@ -137,6 +141,6 @@ const InfoForm: FC<Props> = ({ profile, handleSaveBtnClick }) => {
          </FieldList>
       </StyledInfoForm>
    );
-}
+})
 
 export default InfoForm;

@@ -1,4 +1,4 @@
-import React, { FC, useState } from "react";
+import React, { FC, useCallback, useState } from "react";
 import { useAppDispatch } from "../../hooks/redux";
 import { updateStatus } from "../../store/reducers/auth/thunk-creators";
 import StatusForm from "./StatusForm";
@@ -9,7 +9,7 @@ interface Props {
    isOwner: boolean
 }
 
-const ProfileStatus: FC<Props> = ({ status, isOwner }) => {
+const ProfileStatus: FC<Props> = React.memo(({ status, isOwner }) => {
    const [editMode, setEditMode] = useState(false);
 
    const dispatch = useAppDispatch();
@@ -18,14 +18,16 @@ const ProfileStatus: FC<Props> = ({ status, isOwner }) => {
       setEditMode(true);
    }
 
-   const handleSaveBtnClick = async (status: string) => {
+   const handleSaveBtnClick = useCallback(async (statusText: string) => {
       try {
-         await dispatch(updateStatus(status));
+         if (status !== statusText) {
+            await dispatch(updateStatus(status));
+         }
          setEditMode(false);
       } catch (e: any) {
          alert(e);
       }
-   }
+   }, [status]);
 
    return (
       <StyledProfileStatus>
@@ -41,6 +43,6 @@ const ProfileStatus: FC<Props> = ({ status, isOwner }) => {
          }
       </StyledProfileStatus>
    );
-}
+})
 
 export default ProfileStatus;

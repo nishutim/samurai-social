@@ -14,7 +14,7 @@ interface Props {
    onNextBtnClick: (pageNum: number) => void
 }
 
-const Paginator: FC<Props> = ({
+const Paginator: FC<Props> = React.memo(({
    totalCount,
    currentPageNum,
    pageSize = 10,
@@ -64,6 +64,6 @@ const Paginator: FC<Props> = ({
          </Pagination>
       </StyledPaginator>
    );
-}
+})
 
 export default Paginator;
