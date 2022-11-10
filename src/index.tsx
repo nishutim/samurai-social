@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import { BrowserRouter } from 'react-router-dom';
+import { HashRouter } from 'react-router-dom';
 import { ThemeProvider } from 'styled-components';
 import theme from './theme';
 import { Provider } from 'react-redux';
@@ -13,12 +13,12 @@ const root = ReactDOM.createRoot(
 );
 
 root.render(
-  <BrowserRouter>
+  <HashRouter basename={process.env.PUBLIC_URL}>
     <ThemeProvider theme={theme}>
       <Provider store={store}>
         <GlobalStyle />
         <App />
       </Provider>
     </ThemeProvider>
-  </BrowserRouter>
+  </HashRouter>
 );
