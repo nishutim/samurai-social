@@ -109,7 +109,7 @@ const LoginForm: FC<Props> = React.memo(({ isLoading, captchaUrl, handleLogin })
                align="center"
             >
                <RegistrationLink>
-                  Still don't have an account? <a href="https://social-network.samuraijs.com/" target={'_blank'}>Sign up!</a>
+                  Still don't have an account? <a href="https://social-network.samuraijs.com/signUp" target={'_blank'}>Sign up!</a>
                </RegistrationLink>
                <Button type="submit" disabled={isLoading}>Sing in</Button>
             </FlexContainer>

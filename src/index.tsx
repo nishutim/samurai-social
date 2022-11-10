@@ -13,7 +13,7 @@ const root = ReactDOM.createRoot(
 );
 
 root.render(
-  <HashRouter basename={process.env.PUBLIC_URL}>
+  <HashRouter>
     <ThemeProvider theme={theme}>
       <Provider store={store}>
         <GlobalStyle />
