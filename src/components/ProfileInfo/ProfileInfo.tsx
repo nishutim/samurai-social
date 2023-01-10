@@ -26,9 +26,7 @@ const ProfileInfo: FC<Props> = React.memo(({ profile, isOwner }) => {
       try {
          await dispatch(updateProfile(profile, setStatus));
          setEditMode(false);
-      } catch (e: any) {
-         alert(e);
-      }
+      } catch (e: any) { }
    }, [])
 
    return (

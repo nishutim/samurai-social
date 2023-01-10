@@ -21,7 +21,7 @@ const ProfileStatus: FC<Props> = React.memo(({ status, isOwner }) => {
    const handleSaveBtnClick = useCallback(async (statusText: string) => {
       try {
          if (status !== statusText) {
-            await dispatch(updateStatus(status));
+            await dispatch(updateStatus(statusText));
          }
          setEditMode(false);
       } catch (e: any) {

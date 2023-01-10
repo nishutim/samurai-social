@@ -25,6 +25,9 @@ const ProfilePage: FC = () => {
    const currentStatus = paramsId ? status : authUserStatus;
    const isOwner = !paramsId;
 
+   console.log(currentStatus);
+
+
    const dispatch = useAppDispatch();
 
    useEffect(() => {

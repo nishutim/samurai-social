@@ -30,11 +30,11 @@ const validate = (values: FormValues) => {
    }
 
    Object.keys(values.contacts).map(contact => {
-      if (values.contacts[contact as keyof IContacts].length > 40) {
+      if (values.contacts[contact as keyof IContacts].length > 60) {
          if (!errors.contacts) {
             errors.contacts = {};
          }
-         errors.contacts[contact as keyof IContacts] = 'Must be 40 characters or less';
+         errors.contacts[contact as keyof IContacts] = 'Must be 60 characters or less';
       }
    });
 

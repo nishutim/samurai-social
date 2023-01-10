@@ -37,6 +37,6 @@ export const MessageItemMessage = styled.div`
    }
 
    p {
-
+      word-break: break-all;
    }
 `;
